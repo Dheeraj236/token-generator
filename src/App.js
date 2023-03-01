@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Dashboard from './Dashboard';
+import Login from './Login';
+import Profile from './Profile';
+import {ProtectedRoute} from './ProtectedRoute';
+import Provider from './Provider';
+// import './App.css'
 
-function App() {
+
+
+const App = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const ref = useRef()
+
+  
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    
+      <Provider>
+      <BrowserRouter>
+      <Routes>
+        <Route path ="/" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path ="/Dashboard" element={ <ProtectedRoute isLoggedIn={isLoggedIn}> <Dashboard /></ProtectedRoute> } />
+        <Route path ="/Profile" element={ <ProtectedRoute isLoggedIn={isLoggedIn}> <Profile /></ProtectedRoute> } />
+
+
+      </Routes>
+      </BrowserRouter>
+      </Provider>
+  
+  )
 }
 
-export default App;
+export default App
